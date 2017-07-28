@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">JobSearcher</string>
+    <string name="search">Поиск</string>
+    <string name="key_words">Ключевые слова</string>
+    <string name="city">Город</string>
+    <string name="experience_title">Опыт работы</string>
+    <string name="period_title">Период</string>
+    <string-array name="experience">
+        <item>Не имеет значения</item>
+        <item>Нет опыта</item>
+        <item>От 1 года до 3 лет</item>
+    </string-array>
+    <string-array name="period">
+        <item>За месяц</item>
+        <item>За неделю</item>
+        <item>За сегодня</item>
+    </string-array>
+
+</resources>
