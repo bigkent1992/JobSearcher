@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import com.example.kent.jobsearcher.OnShowList;
 import com.example.kent.jobsearcher.UpdateList;
 import com.example.kent.jobsearcher.View.FragmentVacancies;
+import com.example.kent.jobsearcher.View.FragmentVacanciesNew;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +25,8 @@ import java.util.List;
  */
 
 public class PracaByStrategy implements Strategy {
-    private static final String URL = "https://praca.by/search/vacancies/?search[query]=";
+    //private static final String URL = "https://praca.by/search/vacancies/?search[query]=";
+    private static final String URL = "https://praca.by/";
     private static final String REFERRER = "https://hh.ru/search/vacancy?text=java+%D0%BA%D0%B8%D0%B5%D0%B2";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
     // Context context;
@@ -79,6 +81,14 @@ public class PracaByStrategy implements Strategy {
                         list.add(vacancy);
                     }
                 }
+                Elements paginations = document.getElementsByClass("pagination__item");
+                if (paginations.size() > 0) {
+                    for (int j = 1;j < paginations.size();j++) {
+                        if (j == paginations.size() - 1)
+                            nextPage = paginations.get(j).select("a").attr("href");
+                    }
+                } else
+                    nextPage = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -103,13 +113,15 @@ public class PracaByStrategy implements Strategy {
         protected void onPostExecute(List<Vacancy> list) {
             super.onPostExecute(list);
             if (fragment == null) {
-                fragment = new FragmentVacancies();
+                //fragment = new FragmentVacancies();
+                fragment = new FragmentVacanciesNew();
                 setUpdateListener((UpdateList) fragment);
                 Bundle args = new Bundle();
                 if (!count.equals(""))
                     args.putString("count", count);
                 args.putString("name", "praca.by");
                 args.putString("url", searchString);
+                args.putString("nextPage", nextPage);
                 args.putParcelableArrayList("vacancies", (ArrayList<? extends Parcelable>) list);
                 fragment.setArguments(args);
                 listener.OnSearchCompleted(fragment);

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public synchronized void OnSearchCompleted(Fragment fragment) {
+    public void OnSearchCompleted(Fragment fragment) {
        /* if (list.isEmpty()) {
             Toast.makeText(this, "Вакансий нет", Toast.LENGTH_LONG).show();
             return;

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import com.example.kent.jobsearcher.OnShowList;
 import com.example.kent.jobsearcher.UpdateList;
 import com.example.kent.jobsearcher.View.FragmentVacancies;
+import com.example.kent.jobsearcher.View.FragmentVacanciesNew;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -151,7 +152,8 @@ public class RabotaByStrategy implements Strategy {
         protected void onPostExecute(List<Vacancy> list) {
             super.onPostExecute(list);
             if (fragment == null) {
-                fragment = new FragmentVacancies();
+                //fragment = new FragmentVacancies();
+                fragment = new FragmentVacanciesNew();
                 setUpdateListener((UpdateList) fragment);
                 Bundle args = new Bundle();
                 if (!count.equals(""))
