@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Kent on 11.07.2017.
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class PracaByStrategy implements Strategy {
     //private static final String URL = "https://praca.by/search/vacancies/?search[query]=";
-    private static final String URL = "https://praca.by/";
+    private static final String URL = "https://praca.by/search/vacancies/";
     private static final String REFERRER = "https://hh.ru/search/vacancy?text=java+%D0%BA%D0%B8%D0%B5%D0%B2";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0";
     // Context context;
@@ -83,9 +84,12 @@ public class PracaByStrategy implements Strategy {
                 }
                 Elements paginations = document.getElementsByClass("pagination__item");
                 if (paginations.size() > 0) {
-                    for (int j = 1;j < paginations.size();j++) {
-                        if (j == paginations.size() - 1)
+                    for (int j = 0;j < paginations.size()-1;j++) {
+                        if (j == paginations.size() - 2) {
                             nextPage = paginations.get(j).select("a").attr("href");
+                            if (paginations.get(j + 1).select("a").attr("href").equals(""))
+                                nextPage = null;
+                        }
                     }
                 } else
                     nextPage = null;

@@ -1,6 +1,5 @@
 package com.example.kent.jobsearcher;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.kent.jobsearcher.Model.TutByDetails;
 import com.example.kent.jobsearcher.Model.Vacancy;
 
 import java.util.List;
@@ -16,13 +16,18 @@ import java.util.List;
  * Created by Kent on 12.08.2017.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     public List<Vacancy> vacancies;
+    private CardClick cardClick;
 
     public ListAdapter(List<Vacancy> vacancies) {
         this.vacancies = vacancies;
+    }
+
+    public void setCardClick(CardClick cardClick) {
+        this.cardClick = cardClick;
     }
 
     @Override
@@ -40,11 +45,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof VacancyHolder) {
-            Vacancy vacancy = vacancies.get(position);
+            final Vacancy vacancy = vacancies.get(position);
             VacancyHolder vacancyHolder = (VacancyHolder) holder;
             vacancyHolder.title.setText(vacancy.getTitle());
             vacancyHolder.url.setText(vacancy.getUrl());
             vacancyHolder.company.setText(vacancy.getCompanyName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardClick.onCardClick(vacancy);
+                }
+            });
         } else if (holder instanceof LoadingHolder) {
             LoadingHolder loadingHolder = (LoadingHolder) holder;
             loadingHolder.progressBar.setIndeterminate(true);

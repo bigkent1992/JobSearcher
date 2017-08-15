@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kent.jobsearcher.CardClick;
 import com.example.kent.jobsearcher.ListAdapter;
 import com.example.kent.jobsearcher.MainActivity;
+import com.example.kent.jobsearcher.Model.TutByDetails;
 import com.example.kent.jobsearcher.Model.Vacancy;
+import com.example.kent.jobsearcher.OnShowDetails;
 import com.example.kent.jobsearcher.R;
 import com.example.kent.jobsearcher.UpdateList;
 
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by Kent on 12.08.2017.
  */
 
-public class FragmentVacanciesNew extends Fragment implements UpdateList {
+public class FragmentVacanciesNew extends Fragment implements UpdateList, CardClick{
     private ListAdapter adapter;
     private String name, nextPage, url;
     private int lastVisibleItem, totalItemCount, visibleItemCount;
@@ -51,6 +54,20 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ListAdapter(list);
+        adapter.setCardClick(new CardClick() {
+            @Override
+            public void onCardClick(Vacancy vacancy) {
+                TutByDetails details = new TutByDetails(new OnShowDetails() {
+                    @Override
+                    public void OnSearchCompleted(Fragment fragment) {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
+                        // Fragment fragment1 = getActivity().getSupportFragmentManager().findFragmentById(R.id.main_frame);
+                        // ViewPager pager = fragment1.
+                    }
+                });
+                details.searchExecute(vacancy.getUrl());
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -71,6 +88,10 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList {
         return view;
     }
 
+    public void qwerty() {
+
+    }
+
     private void loadURL() {
         if (nextPage == null) return;
        // dialog = new ProgressDialog(getActivity());
@@ -78,7 +99,7 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList {
         adapter.vacancies.add(null);
         adapter.notifyItemInserted(adapter.vacancies.size()-1);
         boolean isNextPage = false;
-        String searchString = null;
+        String searchString;
         isLoading = true;
         searchString = nextPage;
         if (name.equals("rabota.by"))
@@ -112,5 +133,18 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList {
         adapter.notifyDataSetChanged();
         this.nextPage = nextPage;
         isLoading = false;
+    }
+
+    @Override
+    public void onCardClick(Vacancy vacancy) {
+        TutByDetails details = new TutByDetails(new OnShowDetails() {
+            @Override
+            public void OnSearchCompleted(Fragment fragment) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
+                // Fragment fragment1 = getActivity().getSupportFragmentManager().findFragmentById(R.id.main_frame);
+                // ViewPager pager = fragment1.
+            }
+        });
+        details.searchExecute(vacancy.getUrl());
     }
 }

@@ -102,7 +102,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             etKey_words.setError("Это поле не может быть пустым");
             return null;
         }
-        builder.append("search/vacancies/?search[query]=").append(key_words);
+        builder.append("?search[query]=").append(key_words);
 
         if (!TextUtils.isEmpty(city))
             builder.append("+").append(city);
