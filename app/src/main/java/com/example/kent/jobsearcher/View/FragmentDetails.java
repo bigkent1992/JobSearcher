@@ -67,6 +67,10 @@ public class FragmentDetails extends Fragment {
                 for (String key : key_skills)
                     builder.append(key).append(" | ");
                 tvKey_skills.setText(builder.toString());
+            } else {
+                TextView tvKey_skills_title = (TextView) view.findViewById(R.id.tvKey_skills_title);
+                tvKey_skills_title.setVisibility(View.GONE);
+                tvKey_skills.setVisibility(View.GONE);
             }
 
         }

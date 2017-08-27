@@ -36,9 +36,15 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
     public Fragment fragmentTutBy = null;
     public Fragment fragmentPracaBy = null;
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setRetainInstance(true);
         args = getArguments();
        // pages = args.getInt("pages");
 
@@ -101,21 +107,6 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = pageList.get(position);
-            /*Bundle bundle;
-            switch (position) {
-                case 0:
-                    list = args.getParcelableArrayList("v_tut.by");
-                    fragment = new FragmentVacancies();
-                    bundle = new Bundle();
-                    bundle.putParcelableArrayList("vacancies", (ArrayList<? extends Parcelable>) list);
-                    fragment.setArguments(bundle);
-                case 1:
-                    list = args.getParcelableArrayList("v_praca.by");
-                    fragment = new FragmentVacancies();
-                    bundle = new Bundle();
-                    bundle.putParcelableArrayList("vacancies", (ArrayList<? extends Parcelable>) list);
-                    fragment.setArguments(bundle);
-            }*/
             return fragment;
 
             //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack("one").commit();
@@ -134,6 +125,11 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
         @Override
         public CharSequence getPageTitle(int position) {
             return pageTitleList.get(position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            //super.destroyItem(container, position, object);
         }
 
         public void addPage(Fragment fragment, String title) {

@@ -1,7 +1,9 @@
 package com.example.kent.jobsearcher.View;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
@@ -21,6 +23,7 @@ import com.example.kent.jobsearcher.OnShowDetails;
 import com.example.kent.jobsearcher.R;
 import com.example.kent.jobsearcher.UpdateList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,52 +32,69 @@ import java.util.List;
  */
 
 public class FragmentVacanciesNew extends Fragment implements UpdateList, CardClick{
+    private static final String LOG_TAG = "MyLog";
     private ListAdapter adapter;
     private String name, nextPage, url;
     private int lastVisibleItem, totalItemCount, visibleItemCount;
     boolean isLoading = false;
     ProgressDialog dialog;
-    int  visibleThreshold = 4;
+    int  visibleThreshold = 2;
     boolean userScrolled = false;
+    List<Vacancy> list;
+   // final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+       // outState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) adapter.vacancies);
+     //   outState.putParcelable("myState", layoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "FragmentVacanciesNewCreate");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "FragmentVacanciesNewDestroy");
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("log", "onCreateView");
-        Bundle args = getArguments();
-        name = args.getString("name");
-        nextPage = args.getString("nextPage");
-        url = args.getString("url");
-        List<Vacancy> list = args.getParcelableArrayList("vacancies");
+        setRetainInstance(true);
         View view = inflater.inflate(R.layout.list_view, null);
 
 
        // RecyclerView recyclerView = new RecyclerView(new ContextThemeWrapper(getActivity(), R.style.ScrollbarRecyclerView));
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+     //   if (savedInstanceState != null)
+        //    layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("myState"));
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ListAdapter(list);
-        adapter.setCardClick(new CardClick() {
-            @Override
-            public void onCardClick(Vacancy vacancy) {
-                TutByDetails details = new TutByDetails(new OnShowDetails() {
-                    @Override
-                    public void OnSearchCompleted(Fragment fragment) {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
-                        // Fragment fragment1 = getActivity().getSupportFragmentManager().findFragmentById(R.id.main_frame);
-                        // ViewPager pager = fragment1.
-                    }
-                });
-                details.searchExecute(vacancy.getUrl());
-            }
-        });
+        if (savedInstanceState == null) {
+            Bundle args = getArguments();
+            name = args.getString("name");
+            nextPage = args.getString("nextPage");
+            url = args.getString("url");
+            list = args.getParcelableArrayList("vacancies");
+            adapter = new ListAdapter(list);
+            adapter.setCardClick(this);
+        }
+       // }
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                visibleItemCount = layoutManager.getChildCount();
+               // visibleItemCount = layoutManager.getChildCount();
                 totalItemCount = layoutManager.getItemCount();
+                if (totalItemCount < 20) return;
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                 if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                    // if (onLoadMoreListener != null) {
@@ -88,12 +108,8 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
         return view;
     }
 
-    public void qwerty() {
-
-    }
-
     private void loadURL() {
-        if (nextPage == null) return;
+        if (nextPage.equals("")) return;
        // dialog = new ProgressDialog(getActivity());
         //dialog.show();
         adapter.vacancies.add(null);
@@ -113,16 +129,6 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
                 break;
         }*/
         ((MainActivity)getActivity()).startSearching(searchString, name, isNextPage);
-        // Strategy strategy;
-        // Provider provider;
-        //if (searchString.startsWith("https://jobs.tut.by")) {
-        //loadingMore = true;
-        //((MainActivity)getActivity()).startSearching(searchString, name);
-        //strategy = new TutByStrategy((OnShowList) getActivity());
-        //provider = new Provider();
-        // provider.setStrategy(strategy);
-        // provider.getAllVacancies(searchString);
-        // }
     }
 
     @Override
@@ -141,8 +147,6 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
             @Override
             public void OnSearchCompleted(Fragment fragment) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
-                // Fragment fragment1 = getActivity().getSupportFragmentManager().findFragmentById(R.id.main_frame);
-                // ViewPager pager = fragment1.
             }
         });
         details.searchExecute(vacancy.getUrl());

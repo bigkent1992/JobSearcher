@@ -1,11 +1,15 @@
 package com.example.kent.jobsearcher.View;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,19 +30,37 @@ import java.util.List;
  */
 
 public class FragmentSearch extends Fragment implements View.OnClickListener {
+    private static final String LOG_TAG = "MyLog";
     TextView etKey_words, etCity;
     Spinner spPeriod, spExperience;
     Button btSearch;
+    TextView tvCount;
+    Toolbar toolbar;
+
+    /*@Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(LOG_TAG, "onSaveInstanceState");
+        outState.putString("etKey_words", etKey_words.getText().toString());
+    }*/
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateViewFragment");
         final View view = inflater.inflate(R.layout.vacancies_search, null);
         etKey_words = (TextView) view.findViewById(R.id.etKey_words);
+       // if (savedInstanceState != null) {
+         //   etKey_words.setText(savedInstanceState.getString("etKey_words"));
+       // }
         etCity = (TextView) view.findViewById(R.id.etCity);
         spPeriod = (Spinner) view.findViewById(R.id.spPeriod);
         spExperience = (Spinner) view.findViewById(R.id.spExperience);
         btSearch = (Button) view.findViewById(R.id.btSearch);
+
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
 
         ArrayAdapter<String> adapterExp = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.experience));
@@ -232,4 +254,54 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
         getChildFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).commit();
         //getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
     }*/
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(LOG_TAG, "onAttachFragment");
+       // getFragmentManager().beginTransaction().attach(this).commit();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(LOG_TAG, "onDetachFragment");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(LOG_TAG, "onActivityCreatedFragment");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroyFragment");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "onPauseFragment");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "onResumeFragment ");
+        tvCount.setText("Поиск");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "onStartFragment");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "onStopFragment");
+    }
 }

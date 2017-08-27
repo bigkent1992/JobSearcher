@@ -1,5 +1,6 @@
 package com.example.kent.jobsearcher;
 
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnShowList {
+    private static final String LOG_TAG = "MyLog";
     Toolbar toolbar;
     TextView tvCount;
     Integer count;
@@ -37,17 +40,40 @@ public class MainActivity extends AppCompatActivity
     Provider provider;
     int countFr = 0;
     private UpdateList updateListener;
+    private FragmentSearch fragmentSearch;
 
     public void setUpdateListener(UpdateList updateListener) {
         this.updateListener = updateListener;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+      //  getSupportFragmentManager().putFragment(outState, "FragmentSearch", fragmentSearch);
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.d(LOG_TAG, "OnCreate");
 
+        MainActivity mainActivity = (MainActivity) getLastCustomNonConfigurationInstance();
+        if (mainActivity != null) {
+            if (mainActivity.provider != null)
+                this.provider = mainActivity.provider;
+            if (mainActivity.tutByStrategy != null)
+                this.tutByStrategy = mainActivity.tutByStrategy;
+            if (mainActivity.pracaByStrategy != null)
+                this.pracaByStrategy = mainActivity.pracaByStrategy;
+            if (mainActivity.rabotaByStrategy != null)
+                this.rabotaByStrategy = mainActivity.rabotaByStrategy;
+        }
+        setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -63,7 +89,23 @@ public class MainActivity extends AppCompatActivity
         names.add("tut.by");
         names.add("praca.by");
         names.add("rabota.by");
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentSearch()).commit();
+        if (savedInstanceState == null) {
+            //   fragmentSearch = (FragmentSearch) getSupportFragmentManager().getFragment(savedInstanceState, "FragmentSearch");
+            //  getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentSearch).commit();
+            //  } else
+            fragmentSearch = new FragmentSearch();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentSearch).commit();
+        }
+       /*// if (savedInstanceState != null) {
+            Object object = getLastNonConfigurationInstance();
+            if (object instanceof FragmentSearch) {
+            fragmentSearch = (FragmentSearch) getLastNonConfigurationInstance();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentSearch).commit();
+        }
+        else {
+            fragmentSearch = new FragmentSearch();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentSearch).commit();
+        }*/
     }
 
 
@@ -203,5 +245,45 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy");
+    }
+
+    protected void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "onPause");
+    }
+
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, "onRestart");
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+       // Log.d(LOG_TAG, "onRestoreInstanceState");
+    }
+
+    protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "onResume ");
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+       // Log.d(LOG_TAG, "onSaveInstanceState");
+    }
+
+    protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "onStart");
+    }
+
+    protected void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "onStop");
     }
 }
