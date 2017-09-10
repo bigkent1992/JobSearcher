@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +35,15 @@ import java.util.List;
 public class FragmentVacanciesNew extends Fragment implements UpdateList, CardClick{
     private static final String LOG_TAG = "MyLog";
     private ListAdapter adapter;
-    private String name, nextPage, url;
-    private int lastVisibleItem, totalItemCount, visibleItemCount;
+    private String name, nextPage, url, count;
+    int lastVisibleItem, totalItemCount, visibleItemCount;
     boolean isLoading = false;
     ProgressDialog dialog;
-    int  visibleThreshold = 2;
+    int  visibleThreshold = 3;
     boolean userScrolled = false;
     List<Vacancy> list;
+    Toolbar toolbar;
+    RecyclerView recyclerView;
    // final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
     @Override
@@ -62,17 +65,16 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
         Log.d(LOG_TAG, "FragmentVacanciesNewDestroy");
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("log", "onCreateView");
         setRetainInstance(true);
         View view = inflater.inflate(R.layout.list_view, null);
-
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
        // RecyclerView recyclerView = new RecyclerView(new ContextThemeWrapper(getActivity(), R.style.ScrollbarRecyclerView));
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
      //   if (savedInstanceState != null)
         //    layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable("myState"));
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -83,6 +85,7 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
             nextPage = args.getString("nextPage");
             url = args.getString("url");
             list = args.getParcelableArrayList("vacancies");
+           // count = args.getString("count");
             adapter = new ListAdapter(list);
             adapter.setCardClick(this);
         }
@@ -139,6 +142,7 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
         adapter.notifyDataSetChanged();
         this.nextPage = nextPage;
         isLoading = false;
+        toolbar.setSubtitle("Показано: "+recyclerView.getLayoutManager().getItemCount());
     }
 
     @Override

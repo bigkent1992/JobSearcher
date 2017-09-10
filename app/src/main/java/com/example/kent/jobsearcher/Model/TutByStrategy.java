@@ -83,7 +83,10 @@ public class TutByStrategy implements Strategy {
                         Vacancy vacancy = new Vacancy();
                         vacancy.setTitle(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-title").text());
                         vacancy.setUrl(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-title").attr("href"));
+                        vacancy.setSalary(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-compensation").text());
                         vacancy.setCompanyName(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-employer").text());
+                        vacancy.setAddress(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-address").text());
+                        vacancy.setDate(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-date").text());
                         list.add(vacancy);
                     }
                 }

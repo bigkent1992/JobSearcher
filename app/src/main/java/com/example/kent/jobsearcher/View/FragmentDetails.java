@@ -2,7 +2,9 @@ package com.example.kent.jobsearcher.View;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,8 +43,12 @@ public class FragmentDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.details, null);
         List<String> key_skills;
-        name = (TextView) getActivity().findViewById(R.id.toolbar).findViewById(R.id.tvCount);
-        name.setText("TUT.BY");
+        //name = (TextView) getActivity().findViewById(R.id.toolbar).findViewById(R.id.tvCount);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(0);
+        toolbar.setTitle("TUT.BY");
+       //name.setText("TUT.BY");
         tvCaption = (TextView) view.findViewById(R.id.tvCaption);
         tvCompany = (TextView) view.findViewById(R.id.tvCompany);
         tvCity = (TextView) view.findViewById(R.id.tvCity);

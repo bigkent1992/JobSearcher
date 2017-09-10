@@ -98,7 +98,7 @@ public class RabotaByStrategy implements Strategy {
                         reader.close();
                         writer.close();
                     } else {
-                        return Collections.emptyList();
+                        return list;
                     }
                     document = Jsoup.parse(response.toString());
                 } else {
@@ -107,11 +107,11 @@ public class RabotaByStrategy implements Strategy {
                             .userAgent(USER_AGENT)
                             .get();
                     if (document == null)
-                        return Collections.emptyList();
+                        return list;
                 }
 
                 String stringCount = document.getElementsByClass("found shown-block").text();
-                checkCount(stringCount);
+                checkCount(stringCount);//.equals("")?"0":stringCount);
                 nextPage = document.getElementsByClass("flip_pages").select("a").attr("href");
                 // if (nextPage != null)
                 //  searchString = nextPage;

@@ -3,6 +3,7 @@ package com.example.kent.jobsearcher.View;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.TabLayoutOnPageChangeListener;
 import android.support.v4.app.Fragment;
@@ -35,10 +36,21 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
     Bundle args;
     public Fragment fragmentTutBy = null;
     public Fragment fragmentPracaBy = null;
+    Toolbar toolbar;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Fragment page = pagerAdapter.getItem(0);
+        String count = page.getArguments().getString("count");
+        // TextView tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        //tvCount.setText(count==null?"0":count);
+        toolbar.setTitle(count==null?"0":count);
     }
 
     @Nullable
@@ -47,6 +59,9 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
         setRetainInstance(true);
         args = getArguments();
        // pages = args.getInt("pages");
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL|AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
 
         View view = inflater.inflate(R.layout.vacancies_pager, null);
         //pagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
@@ -84,11 +99,12 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageSelected(int position) {
-        Fragment page = pagerAdapter.getItem(position);
+        FragmentVacanciesNew page = (FragmentVacanciesNew) pagerAdapter.getItem(position);
         String count = page.getArguments().getString("count");
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        TextView tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
-        tvCount.setText(count);
+       // TextView tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        //tvCount.setText(count==null?"0":count);
+        toolbar.setTitle(count==null?"Вакансии не найдены":"Найдено "+count+" вакансий");
+        toolbar.setSubtitle("Показано "+page.totalItemCount);
     }
 
     @Override

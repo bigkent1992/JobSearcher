@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void OnSearchCompleted(String count) {
-        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
-        tvCount.setText(count);
+       // tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+      //  tvCount.setText(count);
     }
 
     @Override

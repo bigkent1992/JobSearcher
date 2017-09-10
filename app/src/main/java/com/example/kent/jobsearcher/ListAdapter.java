@@ -58,8 +58,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             final Vacancy vacancy = vacancies.get(position);
             VacancyHolder vacancyHolder = (VacancyHolder) holder;
             vacancyHolder.title.setText(vacancy.getTitle());
-            vacancyHolder.url.setText(vacancy.getUrl());
+            //vacancyHolder.url.setText(vacancy.getUrl());
+            vacancyHolder.salary.setText(vacancy.getSalary());
             vacancyHolder.company.setText(vacancy.getCompanyName());
+            vacancyHolder.address.setText(vacancy.getAddress());
+            vacancyHolder.date.setText(vacancy.getDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,15 +96,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     private static class VacancyHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView url;
-        TextView company;
+        TextView title, url, company, salary, date, address;
+
 
         VacancyHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.tv1);
-            url = (TextView) view.findViewById(R.id.tv2);
+            //url = (TextView) view.findViewById(R.id.tv2);
+            salary = (TextView) view.findViewById(R.id.tv4);
             company = (TextView) view.findViewById(R.id.tv3);
+            address = (TextView) view.findViewById(R.id.tv2);
+            date = (TextView) view.findViewById(R.id.tv5);
         }
     }
 }

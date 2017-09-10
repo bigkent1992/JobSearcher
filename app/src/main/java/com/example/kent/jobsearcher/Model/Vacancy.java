@@ -10,7 +10,15 @@ import java.util.List;
  */
 
 public class Vacancy implements Parcelable {
-    private String title, salary, city, companyName, url, experience, main_text;
+    private String title;
+    private String salary;
+    private String city;
+    private String companyName;
+    private String url;
+    private String experience;
+    private String main_text;
+    private String date;
+    private String address;
     private List<String> key_skills;
 
     public Vacancy() {
@@ -24,6 +32,8 @@ public class Vacancy implements Parcelable {
         url = in.readString();
         experience = in.readString();
         main_text = in.readString();
+        date = in.readString();
+        address = in.readString();
         key_skills = in.createStringArrayList();
     }
 
@@ -37,6 +47,8 @@ public class Vacancy implements Parcelable {
         dest.writeString(experience);
         dest.writeString(main_text);
         dest.writeStringList(key_skills);
+        dest.writeString(date);
+        dest.writeString(address);
     }
 
     @Override
@@ -118,5 +130,21 @@ public class Vacancy implements Parcelable {
 
     public void setMain_text(String main_text) {
         this.main_text = main_text;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

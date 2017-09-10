@@ -1,11 +1,9 @@
 package com.example.kent.jobsearcher.View;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -34,7 +32,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
     TextView etKey_words, etCity;
     Spinner spPeriod, spExperience;
     Button btSearch;
-    TextView tvCount;
+    TextView tvCount, tvCountShowed;
     Toolbar toolbar;
 
     /*@Override
@@ -60,7 +58,13 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
         btSearch = (Button) view.findViewById(R.id.btSearch);
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(0);
+        toolbar.setTitle("Поиск");
+        toolbar.setSubtitle(null);
+        //tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        //tvCountShowed = (TextView) toolbar.findViewById(R.id.tvCountShowed);
+        //tvCountShowed.setVisibility(View.GONE);
 
         ArrayAdapter<String> adapterExp = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.experience));
@@ -290,7 +294,8 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         Log.d(LOG_TAG, "onResumeFragment ");
-        tvCount.setText("Поиск");
+        toolbar.setVisibility(View.VISIBLE);
+       // tvCount.setText("Поиск");
     }
 
     @Override
