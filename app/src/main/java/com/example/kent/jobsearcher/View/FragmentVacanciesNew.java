@@ -10,6 +10,7 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,10 @@ import android.view.ViewGroup;
 import com.example.kent.jobsearcher.CardClick;
 import com.example.kent.jobsearcher.ListAdapter;
 import com.example.kent.jobsearcher.MainActivity;
+import com.example.kent.jobsearcher.Model.PracaByDetails;
+import com.example.kent.jobsearcher.Model.PracaByStrategy;
+import com.example.kent.jobsearcher.Model.RabotaByDetails;
+import com.example.kent.jobsearcher.Model.Strategy;
 import com.example.kent.jobsearcher.Model.TutByDetails;
 import com.example.kent.jobsearcher.Model.Vacancy;
 import com.example.kent.jobsearcher.OnShowDetails;
@@ -112,7 +117,8 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
     }
 
     private void loadURL() {
-        if (nextPage.equals("")) return;
+        if (TextUtils.isEmpty(nextPage)) return;
+        //if (nextPage.equals("")) return;
        // dialog = new ProgressDialog(getActivity());
         //dialog.show();
         adapter.vacancies.add(null);
@@ -123,14 +129,6 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
         searchString = nextPage;
         if (name.equals("rabota.by"))
             isNextPage = true;
-       /* switch (name) {
-            case "tut.by":
-                searchString = "https://jobs.tut.by" + pageNext;
-                break;
-            case "rabota.by":
-                searchString = "http://rabota.by" + pageNext;
-                break;
-        }*/
         ((MainActivity)getActivity()).startSearching(searchString, name, isNextPage);
     }
 
@@ -147,12 +145,34 @@ public class FragmentVacanciesNew extends Fragment implements UpdateList, CardCl
 
     @Override
     public void onCardClick(Vacancy vacancy) {
-        TutByDetails details = new TutByDetails(new OnShowDetails() {
-            @Override
-            public void OnSearchCompleted(Fragment fragment) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
-            }
-        });
-        details.searchExecute(vacancy.getUrl());
+        Strategy details = null;
+        switch (vacancy.getSite()) {
+            case "TUT.BY":
+                details = new TutByDetails(new OnShowDetails() {
+                    @Override
+                    public void OnSearchCompleted(Fragment fragment) {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
+                    }
+                });
+                break;
+            case "RABOTA.BY":
+                details = new RabotaByDetails(new OnShowDetails() {
+                    @Override
+                    public void OnSearchCompleted(Fragment fragment) {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
+                    }
+                });
+                break;
+            case "PRACA.BY":
+                details = new PracaByDetails(new OnShowDetails() {
+                    @Override
+                    public void OnSearchCompleted(Fragment fragment) {
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack(null).commit();
+                    }
+                });
+                break;
+        }
+        if (details != null)
+            details.searchExecute(vacancy.getUrl());
     }
 }

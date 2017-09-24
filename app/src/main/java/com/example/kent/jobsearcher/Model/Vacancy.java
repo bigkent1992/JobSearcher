@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class Vacancy implements Parcelable {
+    private String site;
     private String title;
     private String salary;
     private String city;
@@ -25,6 +26,7 @@ public class Vacancy implements Parcelable {
     }
 
     protected Vacancy(Parcel in) {
+        site = in.readString();
         title = in.readString();
         salary = in.readString();
         city = in.readString();
@@ -39,6 +41,7 @@ public class Vacancy implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(site);
         dest.writeString(title);
         dest.writeString(salary);
         dest.writeString(city);
@@ -67,6 +70,14 @@ public class Vacancy implements Parcelable {
             return new Vacancy[size];
         }
     };
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
 
     public String getTitle() {
         return title;

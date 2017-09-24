@@ -108,15 +108,6 @@ public class MainActivity extends AppCompatActivity
         }*/
     }
 
-
-/*    public void clickSearch(View view) {
-        TutByStrategy strategy = new TutByStrategy(this);
-        Provider provider = new Provider(strategy);
-        provider.getAllVacancies("Минск");
-        //strategy.execute("Минск");
-       // vacancies.addAll(provider.getAllVacancies("Минск"));
-    }*/
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -171,31 +162,6 @@ public class MainActivity extends AppCompatActivity
             pageFragment.fill(names, fragments);
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, pageFragment).addToBackStack(null).commit();
         }
-
-       // setUpdateListener((UpdateList) fragment);
-       // updateListener.loadMoreToList(list);
-
-
-          //  args = new Bundle();
-           // args.putStringArrayList("names", names);
-            //args.putParcelableArrayList("v_tut.by", (ArrayList<? extends Parcelable>) list);
-            //fragment.setArguments(args);
-            //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack("one").commit();
-       // } else {
-            //Bundle args = new Bundle();
-           // args.putParcelableArrayList("v_praca.by", (ArrayList<? extends Parcelable>) list);
-           // fragment.setArguments(args);
-      //  }
-
-      //  Integer pages = count/50;
-       // if (count%50 != 0) pages = pages + 1;
-      //  args.putInt("pages", pages);
-
-/*        FragmentVacancies fragment = new FragmentVacancies();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList("vacancies", (ArrayList<? extends Parcelable>) list);
-        fragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragment).addToBackStack("one").commit();*/
     }
 
     public void startSearching(String searchString, String name, boolean isNextPage) {

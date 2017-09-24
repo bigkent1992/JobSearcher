@@ -47,7 +47,6 @@ public class FragmentDetails extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(0);
-        toolbar.setTitle("TUT.BY");
        //name.setText("TUT.BY");
         tvCaption = (TextView) view.findViewById(R.id.tvCaption);
         tvCompany = (TextView) view.findViewById(R.id.tvCompany);
@@ -60,6 +59,7 @@ public class FragmentDetails extends Fragment {
 
         Vacancy vacancy = getArguments().getParcelable("vacancy");
         if (vacancy != null) {
+            toolbar.setTitle(vacancy.getSite());
             tvCaption.setText(vacancy.getTitle());
             tvCompany.setText(vacancy.getCompanyName());
             tvCity.setText(vacancy.getCity());

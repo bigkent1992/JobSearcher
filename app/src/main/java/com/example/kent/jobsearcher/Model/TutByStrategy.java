@@ -73,7 +73,7 @@ public class TutByStrategy implements Strategy {
                         .userAgent(USER_AGENT)
                         .get();
                 if (document == null)
-                    return Collections.emptyList();
+                    return list;
                 String stringCount = document.getElementsByAttributeValue("data-qa", "vacancy-serp__found").text();
                 checkCount(stringCount);
                 //Elements elements = document.getElementsByAttributeValue("data-qa","div.vacancy-serp__vacancy");
@@ -81,11 +81,12 @@ public class TutByStrategy implements Strategy {
                 if (elements.size() > 0) {
                     for (Element element : elements) {
                         Vacancy vacancy = new Vacancy();
+                        vacancy.setSite("TUT.BY");
                         vacancy.setTitle(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-title").text());
                         vacancy.setUrl(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-title").attr("href"));
                         vacancy.setSalary(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-compensation").text());
                         vacancy.setCompanyName(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-employer").text());
-                        vacancy.setAddress(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-address").text());
+                        vacancy.setCity(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-address").text());
                         vacancy.setDate(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-date").text());
                         list.add(vacancy);
                     }

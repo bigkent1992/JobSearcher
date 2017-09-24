@@ -30,9 +30,9 @@ import java.util.List;
  */
 
 public class RabotaByStrategy implements Strategy {
-    private static final String URL = "http://rabota.by/search/";
-    private static final String URL_NEXT_PAGE = "http://rabota.by";
-    private static final String REFERRER = "http://rabota.by/search/";
+    private static final String URL = "https://rabota.by/search/";
+    private static final String URL_NEXT_PAGE = "https://rabota.by";
+    private static final String REFERRER = "https://rabota.by/search/";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0";
     private static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String ACCEPT_LANGUAGE = "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3";
@@ -89,6 +89,7 @@ public class RabotaByStrategy implements Strategy {
                     OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
                     writer.write(urlParameters);
                     writer.flush();
+                    //int g = conn.getResponseCode();
                     if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         String line;
                         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -120,9 +121,13 @@ public class RabotaByStrategy implements Strategy {
                 if (elements.size() > 0) {
                     for (Element element : elements) {
                         Vacancy vacancy = new Vacancy();
+                        vacancy.setSite("RABOTA.BY");
                         vacancy.setTitle(element.getElementsByClass("statistics_view_short").text());
+                        vacancy.setSalary(element.getElementsByClass("pay_value").first().text());
                         vacancy.setUrl(element.getElementsByClass("statistics_view_short").attr("href"));
                         vacancy.setCompanyName(element.getElementsByClass("org_name").text());
+                        vacancy.setCity(element.getElementsByClass("city").first().text());
+                        vacancy.setDate(element.getElementsByClass("italic").text());
                         list.add(vacancy);
                     }
                 }

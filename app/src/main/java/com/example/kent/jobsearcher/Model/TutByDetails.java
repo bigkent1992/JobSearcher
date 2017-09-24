@@ -37,9 +37,6 @@ public class TutByDetails implements Strategy {
         this.listener = listener;
     }
 
-    public void setUpdateListener(UpdateList updateListener) {
-        this.updateListener = updateListener;
-    }
 
     @Override
     public void searchExecute(String searchString) {
@@ -49,10 +46,6 @@ public class TutByDetails implements Strategy {
     }
 
     private class TutByTask extends AsyncTask<String,String,Vacancy> {
-        /*private Context mContext;
-        public TutByTask(Context context) {
-            mContext = context;
-        }*/
         String count = "";
 
         @Override
@@ -68,12 +61,15 @@ public class TutByDetails implements Strategy {
                         .referrer(REFERRER)
                         .userAgent(USER_AGENT)
                         .get();
+                if (document == null)
+                    return null;
                 //if (document == null)<td class="l-content-colum-1 b-v-info-content"><div class="l-paddings"> з/п не указана</div></td>
                 //    return Collections.emptyList();
                 //String stringCount = document.getElementsByAttributeValue("data-qa", "vacancy-serp__found").text();
                // checkCount(stringCount);
                 //Elements elements = document.getElementsByAttributeValue("data-qa","div.vacancy-serp__vacancy");
                 vacancy = new Vacancy();
+                vacancy.setSite("TUT.BY");
                 vacancy.setTitle(document.getElementsByClass("title b-vacancy-title").text());
                 vacancy.setCompanyName(document.getElementsByClass("companyname").select("a").text());
                 String salary = document.getElementsByClass("l-content-colum-1 b-v-info-content").addClass("l-paddings").text();
@@ -109,16 +105,10 @@ public class TutByDetails implements Strategy {
             return vacancy;
         }
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-           // listener.OnShowList(values[0]);
-        }
 
         @Override
         protected void onPostExecute(Vacancy vacancy) {
             super.onPostExecute(vacancy);
-               // setUpdateListener((UpdateList) fragment);
                 fragment = new FragmentDetails();
                 Bundle args = new Bundle();
                 args.putString("name", "tut.by");

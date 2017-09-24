@@ -43,7 +43,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view1, parent, false);
             return new VacancyHolder(view);
         } else if (viewType == VIEW_TYPE_LOADING) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
@@ -61,7 +61,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             //vacancyHolder.url.setText(vacancy.getUrl());
             vacancyHolder.salary.setText(vacancy.getSalary());
             vacancyHolder.company.setText(vacancy.getCompanyName());
-            vacancyHolder.address.setText(vacancy.getAddress());
+            /*String city = vacancy.getAddress();
+
+            if (city != null && city.contains(",")) {
+                String[] cities = city.split(",");
+                vacancyHolder.address.setText(cities[0]);
+            } else*/
+            vacancyHolder.city.setText(vacancy.getCity());
+            //int pos = city.indexOf(",");
             vacancyHolder.date.setText(vacancy.getDate());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -96,16 +103,16 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     private static class VacancyHolder extends RecyclerView.ViewHolder {
-        TextView title, url, company, salary, date, address;
+        TextView title, url, company, salary, date, city;
 
 
         VacancyHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.tv1);
             //url = (TextView) view.findViewById(R.id.tv2);
-            salary = (TextView) view.findViewById(R.id.tv4);
+            salary = (TextView) view.findViewById(R.id.tv2);
             company = (TextView) view.findViewById(R.id.tv3);
-            address = (TextView) view.findViewById(R.id.tv2);
+            city = (TextView) view.findViewById(R.id.tv4);
             date = (TextView) view.findViewById(R.id.tv5);
         }
     }

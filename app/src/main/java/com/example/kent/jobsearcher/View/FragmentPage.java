@@ -46,11 +46,12 @@ public class FragmentPage extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onResume() {
         super.onResume();
-        Fragment page = pagerAdapter.getItem(0);
+        FragmentVacanciesNew page = (FragmentVacanciesNew) pagerAdapter.getItem(0);
         String count = page.getArguments().getString("count");
         // TextView tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
         //tvCount.setText(count==null?"0":count);
-        toolbar.setTitle(count==null?"0":count);
+        toolbar.setTitle(count==null?"Вакансии не найдены":"Найдено "+count+" вакансий");
+       // toolbar.setSubtitle("Показано "+page.totalItemCount);
     }
 
     @Nullable

@@ -76,9 +76,18 @@ public class PracaByStrategy implements Strategy {
                 if (elements.size() > 0) {
                     for (Element element : elements) {
                         Vacancy vacancy = new Vacancy();
+                        vacancy.setSite("PRACA.BY");
                         vacancy.setTitle(element.getElementsByClass("vac-small__title").text());
                         vacancy.setUrl(element.getElementsByClass("vac-small__title").attr("href"));
+                        String salary = element.getElementsByClass("salary-dotted").text();
+                        if (element.getElementsByClass("salary-up").text().equals(""))
+                            vacancy.setSalary(salary);
+                        else
+                            vacancy.setSalary("от " + salary);
+                        vacancy.setDate(element.getElementsByClass("salary-dotted").text());
                         vacancy.setCompanyName(element.getElementsByClass("vac-small__organization").text());
+                        vacancy.setCity(element.getElementsByClass("vac-small__city").text());
+                        vacancy.setDate(element.getElementsByClass("nowrap").text());
                         list.add(vacancy);
                     }
                 }
